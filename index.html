@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <title>Calculadora</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-xl rounded-lg p-6 w-full">
+        <input type="text" id="expressao" placeholder="Digite a expressão..." 
+            oninput="calcular()" onkeydown="checarEnter(event)"
+            class="w-full p-4 text-xl text-right border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4" />
+        
+        <div class="flex items-center justify-between">
+            <span id="resultado" class="text-2xl text-gray-800">= 0</span>
+            <button class="px-4 py-2 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors"
+                onclick="copiarResultado()">Copiar</button>
+        </div>
+
+        <div class="mt-6 text-sm text-gray-600" id="historico"></div>
+    </div>
+
+    <script>
+        function calcular() {
+            const expressao = document.getElementById('expressao').value;
+            const resultado = document.getElementById('resultado');
+            
+            try {
+                let expressaoFormatada = expressao.replace(/,/g, '.'); // Substitui vírgulas por pontos
+                const valor = eval(expressaoFormatada);
+                let valorFormatado = valor.toFixed(10).replace(/\.0+$/, '').replace(/(\.[0-9]*[1-9])0+$/, '$1').replace('.', ',');
+                resultado.textContent = '= ' + (isNaN(valor) ? 'Erro' : valorFormatado);
+            } catch (e) {
+                resultado.textContent = '= Erro';
+            }
+        }
+
+        function checarEnter(event) {
+            if (event.key === 'Enter') {
+                const expressao = document.getElementById('expressao');
+                const resultado = document.getElementById('resultado').textContent.replace('= ', '');
+                if (resultado !== 'Erro') {
+                    adicionarHistorico(expressao.value, resultado);
+                    expressao.value = resultado;
+                }
+                event.preventDefault();
+            }
+        }
+
+        function copiarResultado() {
+            const resultado = document.getElementById('resultado').textContent.replace('= ', '');
+            navigator.clipboard.writeText(resultado);
+        }
+
+        function adicionarHistorico(expressao, resultado) {
+            const historico = document.getElementById('historico');
+            const novoItem = document.createElement('div');
+            novoItem.textContent = `${expressao} = ${resultado}`;
+            historico.prepend(novoItem);
+        }
+    </script>
+</body>
+</html>
