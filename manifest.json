@@ -2,7 +2,7 @@
   "name": "Calculadora PWA",
   "short_name": "Calculadora",
   "description": "Uma simples e prática calculadora.",
-  "start_url": "/",
+  "start_url": "/melhor-calculadora/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
