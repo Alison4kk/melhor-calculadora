@@ -1,8 +1,7 @@
 const CACHE_NAME = "calculadora-pwa-v1";
 const urlsToCache = [
-  "/index.html",
-  "/manifest.json",
-  "/service-worker.js",
+  "manifest.json",
+  "service-worker.js",
   "https://unpkg.com/@tailwindcss/browser@4"
 ];
 
