@@ -1,65 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/manifest.json">
-    <title>Calculadora</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <title>Calculadora</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white shadow-xl rounded-lg p-6 w-full">
-        <input type="text" id="expressao" placeholder="Digite a expressão..." 
-            oninput="calcular()" onkeydown="checarEnter(event)"
-            class="w-full p-4 text-xl text-right border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4" />
-        
-        <div class="flex items-center justify-between">
-            <span id="resultado" class="text-2xl text-gray-800">= 0</span>
-            <button class="px-4 py-2 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors"
-                onclick="copiarResultado()">Copiar</button>
-        </div>
-
-        <div class="mt-6 text-sm text-gray-600" id="historico"></div>
+  <div class="bg-white shadow-xl rounded-lg p-6 w-full">
+    <input type="text" id="expressao" placeholder="Digite a expressão..." oninput="calcular()"
+      onkeydown="checarEnter(event)"
+      class="w-full p-4 text-xl text-right border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4" />
+    <div class="flex items-center justify-between">
+      <span id="resultado" class="text-2xl text-gray-800">= 0</span>
+      <button class="px-4 py-2 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors"
+        onclick="copiarResultado()">Copiar</button>
     </div>
+    <div class="mt-6 text-sm text-gray-600" id="historico"></div>
+  </div>
+  <script>
+    function calcular() {
+      const expressao = document.getElementById('expressao').value;
+      const resultado = document.getElementById('resultado');
 
-    <script>
-        function calcular() {
-            const expressao = document.getElementById('expressao').value;
-            const resultado = document.getElementById('resultado');
-            
-            try {
-                let expressaoFormatada = expressao.replace(/,/g, '.'); // Substitui vírgulas por pontos
-                const valor = eval(expressaoFormatada);
-                let valorFormatado = valor.toFixed(10).replace(/\.0+$/, '').replace(/(\.[0-9]*[1-9])0+$/, '$1').replace('.', ',');
-                resultado.textContent = '= ' + (isNaN(valor) ? 'Erro' : valorFormatado);
-            } catch (e) {
-                resultado.textContent = '= Erro';
-            }
-        }
+      try {
+        let expressaoFormatada = expressao.replace(/,/g, '.'); // Substitui vírgulas por pontos
+        const valor = eval(expressaoFormatada);
+        let valorFormatado = valor.toFixed(10).replace(/\.0+$/, '').replace(/(\.[0-9]*[1-9])0+$/, '$1').replace('.', ',');
+        resultado.textContent = '= ' + (isNaN(valor) ? 'Erro' : valorFormatado);
+      } catch (e) {
+        resultado.textContent = '= Erro';
+      }
+    }
 
-        function checarEnter(event) {
-            if (event.key === 'Enter') {
-                const expressao = document.getElementById('expressao');
-                const resultado = document.getElementById('resultado').textContent.replace('= ', '');
-                if (resultado !== 'Erro') {
-                    adicionarHistorico(expressao.value, resultado);
-                    expressao.value = resultado;
-                }
-                event.preventDefault();
-            }
+    function checarEnter(event) {
+      if (event.key === 'Enter') {
+        const expressao = document.getElementById('expressao');
+        const resultado = document.getElementById('resultado').textContent.replace('= ', '');
+        if (resultado !== 'Erro') {
+          adicionarHistorico(expressao.value, resultado);
+          expressao.value = resultado;
         }
+        event.preventDefault();
+      }
+    }
 
-        function copiarResultado() {
-            const resultado = document.getElementById('resultado').textContent.replace('= ', '');
-            navigator.clipboard.writeText(resultado);
-        }
+    function copiarResultado() {
+      const resultado = document.getElementById('resultado').textContent.replace('= ', '');
+      navigator.clipboard.writeText(resultado);
+    }
 
-        function adicionarHistorico(expressao, resultado) {
-            const historico = document.getElementById('historico');
-            const novoItem = document.createElement('div');
-            novoItem.textContent = `${expressao} = ${resultado}`;
-            historico.prepend(novoItem);
-        }
-    </script>
+    function adicionarHistorico(expressao, resultado) {
+      const historico = document.getElementById('historico');
+      const novoItem = document.createElement('div');
+      novoItem.textContent = `${expressao} = ${resultado}`;
+      historico.prepend(novoItem);
+    }
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registrado com sucesso:', registration);
+          })
+          .catch((error) => {
+            console.log('Falha ao registrar o Service Worker:', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
