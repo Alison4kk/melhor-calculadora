@@ -61,8 +61,12 @@
       }
     }
 
+    /**
+      * Checa se a tecla pressionada é Enter e, se for, calcula a expressão
+      * @param {KeyboardEvent} event
+      */
     function checarEnter(event) {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' && !event.shiftKey) {
         const expressao = document.getElementById('expressao');
         const resultado = document.getElementById('resultado').textContent.replace('= ', '');
         if (resultado !== 'Erro') {
