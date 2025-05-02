@@ -50,11 +50,17 @@
     function calcular() {
       const expressao = document.getElementById('expressao').value;
       const resultado = document.getElementById('resultado');
-
+    
       try {
         let expressaoFormatada = expressao.replace(/,/g, '.'); // Substitui vírgulas por pontos
         const valor = eval(expressaoFormatada);
-        let valorFormatado = valor.toFixed(10).replace(/\.0+$/, '').replace(/(\.[0-9]*[1-9])0+$/, '$1').replace('.', ',');
+    
+        let valorFormatado = new Intl.NumberFormat('pt-BR', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 10,
+
+        }).format(valor);
+
         resultado.textContent = '= ' + (isNaN(valor) ? 'Erro' : valorFormatado);
       } catch (e) {
         resultado.textContent = '= Erro';
